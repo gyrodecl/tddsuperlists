@@ -111,7 +111,7 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertNotIn('Buy peacock feathers', page_text)
         
         
-        self.fail('Finish the Test!') 
+        #self.fail('Finish the Test!') 
     
         #She visits the URL - her to-do list is still there
 
