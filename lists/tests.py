@@ -18,34 +18,31 @@ class HomePageTest(TestCase):
         expected_html = render_to_string('lists/home.html')   #and testing what templates render
         self.assertEqual(response.content.decode(), expected_html)  #just test whether right template is being used
 
-    def test_home_page_can_save_a_POST_request(self):
-        request = HttpRequest()
-        request.method = 'POST'
-        request.POST['item_text'] = 'A new list item'
+
+class NewListTest(TestCase):
+    
+    def test_saving_a_POST_request(self):
+        response = self.client.post('/lists/new',
+                    data={'item_text':"A new list item"})
         
-        response = home_page(request)
+        #request = HttpRequest()
+        #request.method = 'POST'
+        #request.POST['item_text'] = 'A new list item'
+        
+        #response = home_page(request)
         
         #now look at the Items stored in the database
         self.assertEqual(Item.objects.count(),1)
         new_item = Item.objects.first()
         self.assertEqual(new_item.text, 'A new list item')
     
-    
-    def test_home_page_redirects_after_POST(self):
-        request = HttpRequest()               #setup test
-        request.method = 'POST'
-        request.POST['item_text'] = 'A new list item'
-        
-        response = home_page(request)        #call test
-        
-        self.assertEqual(response.status_code,302)    #run assertions
-        self.assertEqual(response['location'],'/lists/the-only-list-in-the-world/')
+    def test_redirects_after_POST(self):
+        response = self.client.post('/lists/new',
+                        data={'item_text': 'A new list item'})
+        self.assertRedirects(response, '/lists/the-only-list-in-the-world/')
+        #self.assertEqual(response.status_code,302)    #run assertions
+        #self.assertEqual(response['location'],'/lists/the-only-list-in-the-world/')
 
-
-    def test_home_page_only_saves_items_when_necessary(self):
-        request = HttpRequest()
-        home_page(request)
-        self.assertEqual(Item.objects.count(),0)
 
 
 #tests our View for individual lists
