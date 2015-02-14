@@ -6,6 +6,7 @@ from django.http import HttpRequest
 from lists.models import Item, List
 from lists.views import home_page
 
+#[0]test whether our homepage url returns the correct view and template
 class HomePageTest(TestCase):
     
     def test_root_url_resolves_to_home_page_view(self):
@@ -13,12 +14,19 @@ class HomePageTest(TestCase):
         self.assertEqual(found.func, home_page)
         
     def test_home_page_returns_correct_html(self):
+        #the below should probably be
+        #response = self.client.get('/lists/')
+        #self.assertEqual(response.status_code, 200)
+        #self.assertTemplateUsed(response, 'lists/home.html')
+        
         request = HttpRequest()    #low-level testing---actually creating a request
         response = home_page(request)    #and passing it to the view function
         expected_html = render_to_string('lists/home.html')   #and testing what templates render
         self.assertEqual(response.content.decode(), expected_html)  #just test whether right template is being used
 
 
+#[1]test whether you can create a new list by posting to '/lists/new'
+#and whether it redirects to 'lists/(numberofnewlist)
 class NewListTest(TestCase):
     
     def test_saving_a_POST_request(self):
@@ -44,7 +52,11 @@ class NewListTest(TestCase):
         #self.assertEqual(response.status_code,302)    #run assertions
         #self.assertEqual(response['location'],'/lists/the-only-list-in-the-world/')
 
-#test our view that adds an item to an existing list
+
+#[2]test our view that adds an item to an existing list
+# '/lists/%d/add_item'
+#can we add an item to an existing list and does it redirect
+#to the page to view the new list
 class NewItemTest(TestCase):
     
     def test_can_save_a_POST_request_to_an_existing_list(self):
@@ -73,7 +85,9 @@ class NewItemTest(TestCase):
         #most_recent_list_id = List.objects.first().id 
         self.assertRedirects(response, '/lists/%d/' % (correct_list.id,))
 
-#tests our View for individual lists
+#[3]tests our View for individual lists---/lists/(num)/
+#a.do we use the righ template?
+#b.what items get shown on a given list
 class ListViewTest(TestCase):
     
     def test_uses_list_template(self):
@@ -114,7 +128,8 @@ class ListViewTest(TestCase):
         self.assertContains(response, 'itemey 1' )
         self.assertContains(response, 'itemey 2')
     '''
-    
+
+#[4]Just test models--saving and retriving--no views here
 class ListAndItemModelsTest(TestCase):
     
     def test_saving_and_retrieving_items(self):
