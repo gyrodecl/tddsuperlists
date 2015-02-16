@@ -2,6 +2,7 @@ from django.core.urlresolvers import resolve
 from django.template.loader import render_to_string
 from django.test import TestCase
 from django.http import HttpRequest
+from django.utils.html import escape
 
 from lists.models import Item, List
 from lists.views import home_page
@@ -84,6 +85,23 @@ class NewItemTest(TestCase):
         )
         #most_recent_list_id = List.objects.first().id 
         self.assertRedirects(response, '/lists/%d/' % (correct_list.id,))
+
+
+    #Ch10--test that user can't save a list with a blank item--want
+    #error messages sent back to user
+    def test_validation_errors_are_sent_back_to_home_page_template(self):
+        response = self.client.post('/lists/new', data={'item_text': ''})
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'lists/home.html')
+        expected_error = escape("You can't have an empty list item")
+        #print (response.content.decode())
+        self.assertContains(response, expected_error)
+    
+    def test_invalid_list_items_arent_saved(self):
+        self.client.post('/lists/new', data={'item_text': ''})
+        self.assertEqual(List.objects.count(),0)
+        self.assertEqual(Item.objects.count(),0)
+
 
 #[3]tests our View for individual lists---/lists/(num)/
 #a.do we use the righ template?
