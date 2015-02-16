@@ -16,7 +16,8 @@ def view_list(request, list_id):
             item = Item(text=request.POST.get('item_text'), list=requested_list)
             item.full_clean()
             item.save()
-            return HttpResponseRedirect('/lists/%d/' % requested_list.id)
+            #return HttpResponseRedirect('/lists/%d/' % requested_list.id)
+            return HttpResponseRedirect(requested_list.get_absolute_url())
         except ValidationError:
             error = "You can't have an empty list item"
     items = requested_list.item_set.all()
@@ -34,7 +35,7 @@ def new_list(request):
         list_.delete()
         error = "You can't have an empty list item"
         return render(request, 'lists/home.html',{"error":error })
-    return HttpResponseRedirect('/lists/%d/' % list_.id)
+    return HttpResponseRedirect(list_.get_absolute_url())
 
 
 #def add_item(request, list_id):
