@@ -110,7 +110,6 @@ class ListViewTest(TestCase):
         self.assertNotContains(response, 'other list item 1')
         self.assertNotContains(response, 'other list item 2')
     
-    
     def test_passes_correct_list_to_template(self):
         other_list = List.objects.create()
         correct_list = List.objects.create()
@@ -128,57 +127,3 @@ class ListViewTest(TestCase):
         self.assertContains(response, 'itemey 1' )
         self.assertContains(response, 'itemey 2')
     '''
-
-#[4]Just test models--saving and retriving--no views here
-class ListAndItemModelsTest(TestCase):
-    
-    def test_saving_and_retrieving_items(self):
-        list_ = List()
-        list_.save()
-        
-        first_item = Item()
-        first_item.text = 'The first (ever) list item'
-        first_item.list = list_
-        first_item.save()
-    
-        second_item = Item()
-        second_item.text = 'Item the second'
-        second_item.list = list_
-        second_item.save()
-        
-        saved_list = List.objects.first()
-        self.assertEqual(saved_list, list_)
-        
-        saved_items = Item.objects.all()
-        self.assertEqual(saved_items.count(),2)
-        
-        first_saved_item = saved_items[0]
-        second_saved_item = saved_items[1]
-        self.assertEqual(first_saved_item.text,'The first (ever) list item')
-        self.assertEqual(first_saved_item.list, list_)
-        self.assertEqual(second_saved_item.text,'Item the second')
-        self.assertEqual(second_saved_item.list,list_)
-    
-'''
-OLD when we only had the Item model
-'''
-'''
-class ItemModelTest(TestCase):
-    
-    def test_saving_and_retrieving_items(self):
-        first_item = Item()
-        first_item.text='The first (ever) list item'
-        first_item.save()
-        
-        second_item = Item()
-        second_item.text='Item the second'
-        second_item.save()
-        
-        saved_items = Item.objects.all()
-        self.assertEqual(saved_items.count(),2)
-        
-        first_saved_item = saved_items[0]
-        second_saved_item = saved_items[1]
-        self.assertEqual(first_saved_item.text,'The first (ever) list item')
-        self.assertEqual(second_saved_item.text,'Item the second')
-'''
