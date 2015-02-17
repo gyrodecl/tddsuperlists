@@ -6,14 +6,30 @@ from django.utils.html import escape
 
 from lists.models import Item, List
 from lists.views import home_page
+from lists.forms import ItemForm
 
 #[0]test whether our homepage url returns the correct view and template
 class HomePageTest(TestCase):
+    maxDiff = None
     
+    #Add chapter 11--check template used rather than which function
+    def test_home_page_renders_home_template(self):
+        response = self.client.get('/')
+        self.assertTemplateUsed(response, 'lists/home.html')
+    
+    #Add chapter 11-form
+    def test_home_page_uses_item_form(self):
+        response = self.client.get('/')
+        self.assertIsInstance(response.context['form'],ItemForm)
+
+    '''
+    #Ch 2--old tests that didn't use the django test client    
     def test_root_url_resolves_to_home_page_view(self):
         found = resolve('/')
         self.assertEqual(found.func, home_page)
-        
+    '''
+    
+    ''' Ch2 don't need this anymore
     def test_home_page_returns_correct_html(self):
         #the below should probably be
         #response = self.client.get('/lists/')
@@ -22,9 +38,9 @@ class HomePageTest(TestCase):
         
         request = HttpRequest()    #low-level testing---actually creating a request
         response = home_page(request)    #and passing it to the view function
-        expected_html = render_to_string('lists/home.html')   #and testing what templates render
-        self.assertEqual(response.content.decode(), expected_html)  #just test whether right template is being used
-
+        expected_html = render_to_string('lists/home.html', {'form':ItemForm()})   #and testing what templates render
+        self.assertMultiLineEqual(response.content.decode(), expected_html)  #just test whether right template is being used
+    '''
 
 #[1]test whether you can create a new list by posting to '/lists/new'
 #and whether it redirects to 'lists/(numberofnewlist)
