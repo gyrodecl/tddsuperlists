@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>/Users/mt/Documents/Programming/Python/django/projects/tddpython/superlists/lists/views.py</title>
+    <style type="text/css">
+    body.default {
+    font-family: Monaco;
+    color: #000000;
+    background-color: #ffffff;
+    font-size: 12.0px;
+    font-weight: normal;
+    font-style: normal;
+}
+span.bracebad {
+    color: #c86464;
+    font-weight: bold;
+}
+span.stdin {
+}
+span.stdout {
+}
+span.operators {
+    color: #781f87;
+}
+span.keywords2 {
+    color: #c1670d;
+}
+span.linenumbers {
+    color: #989898;
+}
+span.numbers {
+    color: #8b0000;
+}
+span.keywords {
+    color: #871f78;
+}
+span.functions {
+    color: #008b8b;
+}
+span.stringeol {
+}
+span.default {
+}
+span.identifiers {
+}
+span.indent_guides {
+    color: #808080;
+}
+span.comments {
+    color: #696969;
+    font-style: italic;
+}
+span.classes {
+    color: #008b8b;
+}
+span.bracehighlight {
+    color: #c86464;
+    font-weight: bold;
+}
+span.stderr {
+    color: #0000ff;
+    font-style: italic;
+}
+span.decorators {
+    color: #009900;
+}
+span.strings {
+    color: #23238e;
+}
+span.control_characters {
+}
+
+    </style>
+    </head>
+    <body class="default"><p>
+<br /><span class="keywords">from</span><span class="default">&nbsp;</span><span class="identifiers">django</span><span class="operators">.</span><span class="identifiers">shortcuts</span><span class="default">&nbsp;</span><span class="keywords">import</span><span class="default">&nbsp;</span><span class="identifiers">render</span>
+<br /><span class="keywords">from</span><span class="default">&nbsp;</span><span class="identifiers">django</span><span class="operators">.</span><span class="identifiers">http</span><span class="default">&nbsp;</span><span class="keywords">import</span><span class="default">&nbsp;</span><span class="identifiers">HttpResponse</span><span class="operators">,</span><span class="default">&nbsp;</span><span class="identifiers">HttpResponseRedirect</span>
+<br /><span class="keywords">from</span><span class="default">&nbsp;</span><span class="identifiers">django</span><span class="operators">.</span><span class="identifiers">core</span><span class="operators">.</span><span class="identifiers">exceptions</span><span class="default">&nbsp;</span><span class="keywords">import</span><span class="default">&nbsp;</span><span class="identifiers">ValidationError</span>
+<br />
+<br /><span class="keywords">from</span><span class="default">&nbsp;</span><span class="identifiers">lists</span><span class="operators">.</span><span class="identifiers">models</span><span class="default">&nbsp;</span><span class="keywords">import</span><span class="default">&nbsp;</span><span class="identifiers">Item</span><span class="operators">,</span><span class="default">&nbsp;</span><span class="identifiers">List</span>
+<br />
+<br /><span class="keywords">def</span><span class="default">&nbsp;</span><span class="functions">home_page</span><span class="operators">(</span><span class="identifiers">request</span><span class="operators">):</span>
+<br /><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keywords">return</span><span class="default">&nbsp;</span><span class="identifiers">render</span><span class="operators">(</span><span class="identifiers">request</span><span class="operators">,</span><span class="default">&nbsp;</span><span class="strings">'lists/home.html'</span><span class="operators">,{})</span>
+<br /><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;
+</span><br /><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;
+</span><br /><span class="keywords">def</span><span class="default">&nbsp;</span><span class="functions">view_list</span><span class="operators">(</span><span class="identifiers">request</span><span class="operators">,</span><span class="default">&nbsp;</span><span class="identifiers">list_id</span><span class="operators">):</span>
+<br /><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="identifiers">requested_list</span><span class="default">&nbsp;</span><span class="operators">=</span><span class="default">&nbsp;</span><span class="identifiers">List</span><span class="operators">.</span><span class="identifiers">objects</span><span class="operators">.</span><span class="identifiers">get</span><span class="operators">(</span><span class="keywords2">id</span><span class="operators">=</span><span class="identifiers">list_id</span><span class="operators">)</span>
+<br /><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="identifiers">error</span><span class="default">&nbsp;</span><span class="operators">=</span><span class="default">&nbsp;</span><span class="keywords2">None</span>
+<br /><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keywords">if</span><span class="default">&nbsp;</span><span class="identifiers">request</span><span class="operators">.</span><span class="identifiers">method</span><span class="default">&nbsp;</span><span class="operators">==</span><span class="default">&nbsp;</span><span class="strings">'POST'</span><span class="operators">:</span>
+<br /><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keywords">try</span><span class="operators">:</span>
+<br /><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="identifiers">item</span><span class="default">&nbsp;</span><span class="operators">=</span><span class="default">&nbsp;</span><span class="identifiers">Item</span><span class="operators">(</span><span class="identifiers">text</span><span class="operators">=</span><span class="identifiers">request</span><span class="operators">.</span><span class="identifiers">POST</span><span class="operators">.</span><span class="identifiers">get</span><span class="operators">(</span><span class="strings">'item_text'</span><span class="operators">),</span><span class="default">&nbsp;</span><span class="keywords2">list</span><span class="operators">=</span><span class="identifiers">requested_list</span><span class="operators">)</span>
+<br /><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="identifiers">item</span><span class="operators">.</span><span class="identifiers">full_clean</span><span class="operators">()</span>
+<br /><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="identifiers">item</span><span class="operators">.</span><span class="identifiers">save</span><span class="operators">()</span>
+<br /><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comments">#return&nbsp;HttpResponseRedirect('/lists/%d/'&nbsp;%&nbsp;requested_list.id)</span>
+<br /><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keywords">return</span><span class="default">&nbsp;</span><span class="identifiers">HttpResponseRedirect</span><span class="operators">(</span><span class="identifiers">requested_list</span><span class="operators">.</span><span class="identifiers">get_absolute_url</span><span class="operators">())</span>
+<br /><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keywords">except</span><span class="default">&nbsp;</span><span class="identifiers">ValidationError</span><span class="operators">:</span>
+<br /><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="identifiers">error</span><span class="default">&nbsp;</span><span class="operators">=</span><span class="default">&nbsp;</span><span class="strings">"You&nbsp;can't&nbsp;have&nbsp;an&nbsp;empty&nbsp;list&nbsp;item"</span>
+<br /><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="identifiers">items</span><span class="default">&nbsp;</span><span class="operators">=</span><span class="default">&nbsp;</span><span class="identifiers">requested_list</span><span class="operators">.</span><span class="identifiers">item_set</span><span class="operators">.</span><span class="identifiers">all</span><span class="operators">()</span>
+<br /><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keywords">return</span><span class="default">&nbsp;</span><span class="identifiers">render</span><span class="operators">(</span><span class="identifiers">request</span><span class="operators">,</span><span class="default">&nbsp;</span><span class="strings">'lists/list.html'</span><span class="operators">,{</span><span class="strings">'items'</span><span class="operators">:</span><span class="identifiers">items</span><span class="operators">,</span>
+<br /><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="strings">'list'</span><span class="operators">:</span><span class="identifiers">requested_list</span><span class="operators">,</span><span class="default">&nbsp;</span><span class="strings">"error"</span><span class="operators">:</span><span class="identifiers">error</span><span class="default">&nbsp;</span><span class="operators">})</span>
+<br />
+<br />
+<br /><span class="keywords">def</span><span class="default">&nbsp;</span><span class="functions">new_list</span><span class="operators">(</span><span class="identifiers">request</span><span class="operators">):</span>
+<br /><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="identifiers">list_</span><span class="default">&nbsp;</span><span class="operators">=</span><span class="default">&nbsp;</span><span class="identifiers">List</span><span class="operators">.</span><span class="identifiers">objects</span><span class="operators">.</span><span class="identifiers">create</span><span class="operators">()</span>
+<br /><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="identifiers">item</span><span class="default">&nbsp;</span><span class="operators">=</span><span class="default">&nbsp;</span><span class="identifiers">Item</span><span class="operators">(</span><span class="identifiers">text</span><span class="operators">=</span><span class="identifiers">request</span><span class="operators">.</span><span class="identifiers">POST</span><span class="operators">.</span><span class="identifiers">get</span><span class="operators">(</span><span class="strings">'item_text'</span><span class="operators">),</span><span class="default">&nbsp;</span><span class="keywords2">list</span><span class="operators">=</span><span class="identifiers">list_</span><span class="operators">)</span>
+<br /><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keywords">try</span><span class="operators">:</span>
+<br /><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="identifiers">item</span><span class="operators">.</span><span class="identifiers">full_clean</span><span class="operators">()</span>
+<br /><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="identifiers">item</span><span class="operators">.</span><span class="identifiers">save</span><span class="operators">()</span>
+<br /><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keywords">except</span><span class="default">&nbsp;</span><span class="identifiers">ValidationError</span><span class="operators">:</span>
+<br /><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="identifiers">list_</span><span class="operators">.</span><span class="identifiers">delete</span><span class="operators">()</span>
+<br /><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="identifiers">error</span><span class="default">&nbsp;</span><span class="operators">=</span><span class="default">&nbsp;</span><span class="strings">"You&nbsp;can't&nbsp;have&nbsp;an&nbsp;empty&nbsp;list&nbsp;item"</span>
+<br /><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keywords">return</span><span class="default">&nbsp;</span><span class="identifiers">render</span><span class="operators">(</span><span class="identifiers">request</span><span class="operators">,</span><span class="default">&nbsp;</span><span class="strings">'lists/home.html'</span><span class="operators">,{</span><span class="strings">"error"</span><span class="operators">:</span><span class="identifiers">error</span><span class="default">&nbsp;</span><span class="operators">})</span>
+<br /><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keywords">return</span><span class="default">&nbsp;</span><span class="identifiers">HttpResponseRedirect</span><span class="operators">(</span><span class="identifiers">list_</span><span class="operators">.</span><span class="identifiers">get_absolute_url</span><span class="operators">())</span>
+<br />
+<br />
+<br /><span class="comments">#def&nbsp;add_item(request,&nbsp;list_id):</span>
+<br /><span class="comments">#&nbsp;&nbsp;&nbsp;&nbsp;requested_list&nbsp;=&nbsp;List.objects.get(id=list_id)</span>
+<br /><span class="comments">#&nbsp;&nbsp;&nbsp;&nbsp;Item.objects.create(text=request.POST.get('item_text'),&nbsp;list=requested_list)</span>
+<br /><span class="default">&nbsp;&nbsp;&nbsp;</span></p></body></html>
