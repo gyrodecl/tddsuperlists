@@ -14,7 +14,7 @@ def view_list(request, list_id):
     error = None
     if request.method == 'POST':
         try:
-            item = Item(text=request.POST.get('item_text'), list=requested_list)
+            item = Item(text=request.POST.get('text'), list=requested_list)
             item.full_clean()
             item.save()
             #return HttpResponseRedirect('/lists/%d/' % requested_list.id)
@@ -22,13 +22,13 @@ def view_list(request, list_id):
         except ValidationError:
             error = "You can't have an empty list item"
     items = requested_list.item_set.all()
-    return render(request, 'lists/list.html',{'items':items,
+    return render(request, 'lists/list.html',{'items':items,                          
                 'list':requested_list, "error":error })
 
 
 def new_list(request):
     list_ = List.objects.create()
-    item = Item(text=request.POST.get('item_text'), list=list_)
+    item = Item(text=request.POST.get('text'), list=list_)
     try:
         item.full_clean()
         item.save()
