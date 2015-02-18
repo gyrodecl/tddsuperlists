@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'lists',
+    'debug_toolbar'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -83,3 +84,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '../static'))
+
+
+DEBUG_TOOLBAR_CONFIG = {
+    'JQUERY_URL':''
+}
