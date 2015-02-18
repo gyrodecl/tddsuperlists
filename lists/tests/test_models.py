@@ -63,7 +63,8 @@ class ItemModelTest(TestCase):
         with self.assertRaises(ValidationError):
             item = Item(list=list_, text='bla')
             item.full_clean()
-    
+            #item.save()---this would raise IntegrityError
+            
     #[b]second make sure it works normally--same text, different lists is ok
     #first time we've had a test with no assertion--want to make sure it's normal
     def test_CAN_save_same_item_to_different_lists(self):
