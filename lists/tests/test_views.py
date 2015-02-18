@@ -8,7 +8,10 @@ from lists.models import Item, List
 from lists.views import home_page
 from lists.forms import ItemForm, EMPTY_ITEM_ERROR
 
+#Each Test class is for a different view
+
 #[0]test whether our homepage url returns the correct view and template
+#lists/home
 class HomePageTest(TestCase):
     maxDiff = None
     
