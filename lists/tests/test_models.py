@@ -56,16 +56,16 @@ class ItemModelTest(TestCase):
             item.full_clean()
 
     #Chapter 12--more validation constraints
-    #[a] first the case we want to catch
+    #12[a] first the case we want to catch
     def test_duplicate_items_are_invalid(self):
         list_ = List.objects.create()
         Item.objects.create(list=list_, text='bla')
         with self.assertRaises(ValidationError):
             item = Item(list=list_, text='bla')
-            item.full_clean()
+            item.full_clean()  #on a model instance, need to call .full_clean()
             #item.save()---this would raise IntegrityError
             
-    #[b]second make sure it works normally--same text, different lists is ok
+    #12[b]second make sure it works normally--same text, different lists is ok
     #first time we've had a test with no assertion--want to make sure it's normal
     def test_CAN_save_same_item_to_different_lists(self):
         list1 = List.objects.create()
@@ -74,7 +74,7 @@ class ItemModelTest(TestCase):
         item = Item(list=list2, text='bla')
         item.full_clean()  #should not raise---no assertion--just making sure no error
     
-    #[c]
+    #12[c]
     def test_list_ordering(self):
         list1 = List.objects.create()
         item1 = Item.objects.create(list=list1, text='i1')
@@ -86,7 +86,7 @@ class ItemModelTest(TestCase):
         #)
         self.assertSequenceEqual(Item.objects.all(),[item1,item2,item3])
         
-    #[d]test how models get represented as strings
+    #12[d]test how models get represented as strings
     def test_string_representation(self):
         item = Item(text='some text')
         self.assertEqual(str(item), 'some text')
