@@ -44,11 +44,11 @@ class ExistingListItemForm(ItemForm):
     
     
     #I like this better#
-    #def clean_text(self):
-    #    data = self.cleaned_data['text']
-    #    if data in [item.text for item in self.instance.list.item_set.all()]:
-    #        raise forms.ValidationError(DUPLICATE_ITEM_ERROR)
-    #    return data
+    def clean_text(self):
+        data = self.cleaned_data['text']
+        if data in [item.text for item in self.instance.list.item_set.all()]:
+            raise forms.ValidationError(DUPLICATE_ITEM_ERROR)
+        return data
 
 
 #example of a form--we replaced it for a modelform
