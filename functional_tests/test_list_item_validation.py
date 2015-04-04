@@ -69,7 +69,7 @@ class ItemValidationTest(FunctionalTest):
         error = self.get_error_element()
         self.assertTrue(error.is_displayed())
         
-        #she start typing in the input box to clear the rror
+        #she start typing in the input box to clear the error
         self.get_item_input_box().send_keys('a')
         
         #she is pleased to see that the error message disappears
